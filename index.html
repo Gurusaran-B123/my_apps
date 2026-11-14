@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f5f7fb" />
-  <title>My Apps — App Store</title>
+  <title>Deplo Apps — App Store</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+    /* NEW FONTS: Sora (headings) + Plus Jakarta Sans (body) */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap');
 
     :root {
       --bg: #f5f7fb;
@@ -20,6 +21,8 @@
       --green: #16a36a;
       --shadow: 0 18px 55px rgba(20, 38, 70, .08);
       --radius: 22px;
+      --font-head: 'Sora', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
     }
     body.dark {
       --bg: #090e18;
@@ -37,10 +40,11 @@
     html { scroll-behavior: smooth; }
     body {
       margin: 0; background: var(--bg); color: var(--text);
-      font-family: 'DM Sans', sans-serif; transition: background .35s, color .35s;
+      font-family: var(--font-body); transition: background .35s, color .35s;
     }
     button, input { font: inherit; }
     button { cursor: pointer; }
+    img { display: block; }
     .shell { width: min(1160px, calc(100% - 40px)); margin: auto; }
     .topbar {
       position: sticky; top: 0; z-index: 20; backdrop-filter: blur(18px);
@@ -48,12 +52,13 @@
       border-bottom: 1px solid var(--line);
     }
     .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-    .brand { display: flex; align-items: center; gap: 11px; font: 700 22px 'Space Grotesk', sans-serif; letter-spacing: -.7px; }
+    .brand { display: flex; align-items: center; gap: 11px; font: 700 22px var(--font-head); letter-spacing: -.7px; }
     .brand-mark {
-      width: 39px; height: 39px; border-radius: 13px; display: grid; place-items: center;
+      width: 39px; height: 39px; border-radius: 13px; display: grid; place-items: center; overflow: hidden;
       color: white; background: linear-gradient(140deg, var(--blue), #1747b8);
       box-shadow: 0 8px 20px rgba(37,99,235,.25); font-size: 19px;
     }
+    .brand-mark img { width: 100%; height: 100%; object-fit: cover; }
     .nav-actions { display: flex; align-items: center; gap: 10px; }
     .icon-btn {
       width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 14px;
@@ -63,7 +68,7 @@
     .icon-btn:hover { transform: translateY(-2px); border-color: var(--blue); }
     .hero { padding: 64px 0 35px; display: grid; grid-template-columns: 1.25fr .75fr; align-items: center; gap: 35px; }
     .eyebrow { color: var(--green); font-size: 12px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; }
-    h1 { font: 700 clamp(42px, 6vw, 68px)/1.03 'Space Grotesk', sans-serif; letter-spacing: -3px; margin: 14px 0 18px; }
+    h1 { font: 700 clamp(40px, 6vw, 64px)/1.05 var(--font-head); letter-spacing: -2.5px; margin: 14px 0 18px; }
     h1 span { color: var(--blue); }
     .hero p { max-width: 560px; color: var(--muted); font-size: 16px; line-height: 1.75; margin: 0; }
     .hero-art {
@@ -77,14 +82,45 @@
     .orb.two { width: 100px; height: 100px; background: rgba(22,163,106,.2); bottom: -20px; left: 15px; animation-delay: -2s; }
     .app-stack { position: relative; display: flex; align-items: center; gap: 13px; transform: rotate(-8deg); }
     .stack-tile {
-      width: 78px; height: 90px; border-radius: 23px; background: white; color: var(--blue);
-      display: grid; place-items: center; font-size: 32px; box-shadow: 0 18px 35px rgba(26,57,111,.16);
+      width: 78px; height: 90px; border-radius: 23px; background: white; overflow: hidden;
+      display: grid; place-items: center; box-shadow: 0 18px 35px rgba(26,57,111,.16);
       animation: float 4s ease-in-out infinite;
     }
-    .stack-tile:nth-child(2) { transform: translateY(-24px); color: var(--green); animation-delay: -.8s; }
+    .stack-tile img { width: 100%; height: 100%; object-fit: cover; }
+    .stack-tile:nth-child(2) { transform: translateY(-24px); animation-delay: -.8s; }
     .stack-tile:nth-child(3) { transform: translateY(12px); animation-delay: -1.6s; }
-    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 28px 0 22px; }
-    .section-title { font: 700 25px 'Space Grotesk', sans-serif; letter-spacing: -.7px; margin: 0; }
+
+    /* ---------- ADVERTISEMENT SECTION ---------- */
+    .ads { margin-top: 20px; }
+    .ads-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; }
+    .section-title { font: 700 25px var(--font-head); letter-spacing: -.7px; margin: 0; }
+    .ad-badge {
+      font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--blue); background: var(--blue-soft); padding: 6px 11px; border-radius: 999px;
+    }
+    .ad-slider { position: relative; border-radius: 28px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--surface-2); }
+    .ad-track { display: flex; transition: transform .6s cubic-bezier(.65,0,.25,1); }
+    .ad-slide { min-width: 100%; position: relative; aspect-ratio: 16 / 6; background: linear-gradient(135deg, var(--blue-soft), var(--surface-2)); display: block; text-decoration: none; color: inherit; }
+    .ad-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .ad-placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 13px; font-weight: 700; }
+    .ad-caption {
+      position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 26px 22px; color: white;
+      background: linear-gradient(to top, rgba(5,12,28,.78), transparent);
+    }
+    .ad-caption small { display: inline-block; background: var(--green); color: white; font-weight: 800; font-size: 11px; padding: 4px 10px; border-radius: 999px; margin-bottom: 8px; }
+    .ad-caption h3 { font: 700 22px var(--font-head); margin: 0 0 4px; letter-spacing: -.5px; }
+    .ad-caption p { margin: 0; font-size: 13px; opacity: .88; }
+    .ad-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border: 0; border-radius: 50%;
+      background: rgba(255,255,255,.88); color: #101828; font-size: 18px; display: grid; place-items: center; z-index: 2; transition: transform .2s;
+    }
+    .ad-arrow:hover { transform: translateY(-50%) scale(1.08); }
+    .ad-arrow.prev { left: 14px; } .ad-arrow.next { right: 14px; }
+    .ad-dots { position: absolute; bottom: 12px; right: 18px; display: flex; gap: 6px; z-index: 2; }
+    .ad-dot { width: 8px; height: 8px; border-radius: 99px; border: 0; padding: 0; background: rgba(255,255,255,.5); transition: .25s; }
+    .ad-dot.active { width: 22px; background: white; }
+
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 40px 0 22px; }
     .search-wrap { width: min(330px, 100%); position: relative; }
     .search-wrap span { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); }
     .search {
@@ -108,12 +144,13 @@
     .app-card:hover { transform: translateY(-7px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--blue) 45%, var(--line)); }
     .app-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .app-icon {
-      width: 57px; height: 57px; border-radius: 18px; display: grid; place-items: center;
-      background: var(--blue-soft); color: var(--blue); font-size: 25px; font-weight: 800;
+      width: 57px; height: 57px; border-radius: 18px; overflow: hidden;
+      background: var(--blue-soft); display: grid; place-items: center;
     }
+    .app-icon img { width: 100%; height: 100%; object-fit: cover; }
     .category { font-size: 11px; color: var(--green); background: color-mix(in srgb, var(--green) 11%, var(--surface));
       border-radius: 999px; padding: 6px 10px; font-weight: 800; }
-    .app-card h3 { font: 700 19px 'Space Grotesk', sans-serif; margin: 17px 0 7px; }
+    .app-card h3 { font: 700 18px var(--font-head); margin: 17px 0 7px; letter-spacing: -.3px; }
     .app-card p { color: var(--muted); font-size: 13px; line-height: 1.65; min-height: 43px; margin: 0 0 18px; }
     .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding-top: 15px; }
     .version { font-size: 11px; color: var(--muted); font-weight: 700; }
@@ -133,9 +170,10 @@
       border-radius: 25px; padding: 25px; box-shadow: var(--shadow); animation: pop .25s;
     }
     .settings-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-    .settings h2 { font: 700 24px 'Space Grotesk', sans-serif; margin: 0; }
+    .settings h2 { font: 700 24px var(--font-head); margin: 0; }
     .profile { display: flex; align-items: center; gap: 14px; padding: 16px; background: var(--surface-2); border-radius: 17px; }
-    .avatar { width: 49px; height: 49px; border-radius: 16px; display: grid; place-items: center; color: white; background: var(--blue); font-weight: 800; font-size: 19px; }
+    .avatar { width: 49px; height: 49px; border-radius: 16px; display: grid; place-items: center; overflow: hidden; color: white; background: var(--blue); font-weight: 800; font-size: 19px; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
     .profile strong { display: block; font-size: 15px; }
     .profile small { color: var(--muted); }
     .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 17px 2px; border-bottom: 1px solid var(--line); font-size: 14px; }
@@ -156,9 +194,11 @@
       .nav { min-height: 66px; } .brand { font-size: 19px; }
       .hero { grid-template-columns: 1fr; padding: 44px 0 20px; gap: 25px; }
       .hero-art { min-height: 175px; } .stack-tile { width: 64px; height: 72px; }
-      h1 { letter-spacing: -2px; } .toolbar { align-items: flex-start; flex-direction: column; }
+      h1 { letter-spacing: -1.5px; } .toolbar { align-items: flex-start; flex-direction: column; }
       .search-wrap { width: 100%; } .app-grid { grid-template-columns: 1fr; gap: 13px; }
       .app-card p { min-height: 0; }
+      .ad-slide { aspect-ratio: 16 / 10; } .ad-caption { padding: 30px 16px 16px; } .ad-caption h3 { font-size: 17px; }
+      .ad-arrow { width: 34px; height: 34px; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
   </style>
@@ -166,7 +206,7 @@
 <body>
   <header class="topbar">
     <div class="shell nav">
-      <div class="brand"><div class="brand-mark">M</div> My Apps</div>
+      <div class="brand"><div class="brand-mark" id="brandMark">D</div> Deplo Apps</div>
       <div class="nav-actions">
         <button class="icon-btn" id="themeQuick" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
         <button class="icon-btn" id="openSettings" aria-label="Open settings" title="Settings">⚙</button>
@@ -183,9 +223,21 @@
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="orb one"></div><div class="orb two"></div>
-        <div class="app-stack">
-          <div class="stack-tile">▣</div><div class="stack-tile">✦</div><div class="stack-tile">◈</div>
-        </div>
+        <div class="app-stack" id="heroStack"></div>
+      </div>
+    </section>
+
+    <!-- ADVERTISEMENT SECTION: shows new app updates -->
+    <section class="ads" id="adsSection" aria-label="Advertisement">
+      <div class="ads-head">
+        <h2 class="section-title">Advertisement · New updates</h2>
+        <span class="ad-badge">Ad</span>
+      </div>
+      <div class="ad-slider" id="adSlider">
+        <div class="ad-track" id="adTrack"></div>
+        <button class="ad-arrow prev" id="adPrev" aria-label="Previous">‹</button>
+        <button class="ad-arrow next" id="adNext" aria-label="Next">›</button>
+        <div class="ad-dots" id="adDots"></div>
       </div>
     </section>
 
@@ -196,9 +248,7 @@
       </div>
       <div class="filters" id="filters">
         <button class="filter active" data-filter="All">All apps</button>
-        <button class="filter" data-filter="Tools">Tools</button>
-        <button class="filter" data-filter="Games">Games</button>
-        <button class="filter" data-filter="Media">Media</button>
+        
       </div>
       <div class="app-grid" id="appGrid"></div>
     </section>
@@ -206,7 +256,7 @@
 
   <footer>
     <div class="shell footer-inner">
-      <span>© <span id="year"></span> <strong>My Apps</strong>. Built with care.</span>
+      <span>© <span id="year"></span> <strong>Deplo Apps</strong>. Built with care.</span>
       <span>Powered by GitHub downloads</span>
     </div>
   </footer>
@@ -226,27 +276,61 @@
   </div>
 
   <script>
-    /*
-      CUSTOMIZE THIS SECTION:
-      1. Replace the sample apps with your app details.
-      2. Put each GitHub Release APK/download URL in `downloadUrl`.
-      3. Update the profile details and links below.
-      Tip: A GitHub release asset URL usually looks like:
-      https://github.com/USERNAME/REPOSITORY/releases/download/TAG/your-app.apk
-    */
+    /* =====================================================
+       CUSTOMIZE THIS SECTION
+       -----------------------------------------------------
+       IMAGES: leave "" empty for now. When ready, just type
+       the file name, e.g.  icon: "img.jpg"
+       Put your images in the same folder as this file
+       (or write a path like "images/img.jpg").
+       ===================================================== */
+
+    // Small logo shown top-left (leave "" to show the letter "D")
+    const LOGO = "";
+
     const PROFILE = {
       name: "Your Name",
       role: "App Developer",
+      photo: "",                      // profile photo e.g. "me.jpg"
       email: "yourmail@example.com",
       portfolio: "https://example.com",
       github: "https://github.com/yourusername"
     };
 
+    // ADVERTISEMENT / NEW UPDATES — add as many slides as you want.
+    // image: your banner file name (e.g. "ad1.jpg"). Best size: 1600 x 600.
+    // link: where it goes when clicked ("" = not clickable)
+    const ADS = [
+      {
+        image: "",
+        tag: "New update",
+        title: "Deplo Hatch — Egg Sort v1.1",
+        text: "New levels, smoother animations and bug fixes.",
+        link: ""
+      },
+      {
+        image: "",
+        tag: "New app",
+        title: "Creator Studio is here",
+        text: "Fresh HD videos for your stories and status updates.",
+        link: ""
+      },
+      {
+        image: "",
+        tag: "Update",
+        title: "Quick Tools — more tools added",
+        text: "Faster, cleaner and easier to use.",
+        link: ""
+      }
+    ];
+    const AD_AUTOPLAY_MS = 4500;      // time between slides
+
+    // APPS — icon: image file name (leave "" for empty placeholder)
     const APPS = [
       {
         name: "Deplo Hatch — Egg Sort",
         category: "Games",
-        icon: "🥚",
+        icon: "",
         version: "v1.0.0",
         description: "A cheerful egg-sorting puzzle. Match colourful eggs with their nests and hatch your way through fun levels.",
         downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
@@ -254,7 +338,7 @@
       {
         name: "Creator Studio",
         category: "Media",
-        icon: "✦",
+        icon: "",
         version: "v1.0.0",
         description: "A handy collection of HD videos and creative content for stories, status updates and social posts.",
         downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
@@ -262,13 +346,98 @@
       {
         name: "Quick Tools",
         category: "Tools",
-        icon: "⌘",
+        icon: "",
         version: "v1.0.0",
         description: "A simple place for useful everyday tools, designed to make common tasks quicker and easier.",
         downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
       }
     ];
 
+    /* ================= CODE BELOW — no need to edit ================= */
+
+    function makeImg(src, alt) {
+      if (!src) return null;
+      const img = document.createElement("img");
+      img.src = src; img.alt = alt || ""; img.loading = "lazy";
+      return img;
+    }
+
+    /* ---------- Logo ---------- */
+    (function () {
+      const img = makeImg(LOGO, "Deplo Apps logo");
+      if (img) { const m = document.getElementById("brandMark"); m.textContent = ""; m.appendChild(img); }
+    })();
+
+    /* ---------- Hero stack (uses first 3 app icons) ---------- */
+    (function () {
+      const stack = document.getElementById("heroStack");
+      for (let i = 0; i < 3; i++) {
+        const tile = document.createElement("div");
+        tile.className = "stack-tile";
+        const img = makeImg(APPS[i] && APPS[i].icon, "");
+        if (img) tile.appendChild(img);
+        stack.appendChild(tile);
+      }
+    })();
+
+    /* ---------- Advertisement slider ---------- */
+    (function () {
+      const section = document.getElementById("adsSection");
+      if (!ADS.length) { section.style.display = "none"; return; }
+      const track = document.getElementById("adTrack");
+      const dots = document.getElementById("adDots");
+      let index = 0, timer;
+
+      ADS.forEach((ad, i) => {
+        const slide = document.createElement(ad.link ? "a" : "div");
+        slide.className = "ad-slide";
+        if (ad.link) { slide.href = ad.link; slide.target = "_blank"; slide.rel = "noopener"; }
+
+        const img = makeImg(ad.image, ad.title);
+        if (img) slide.appendChild(img);
+        else {
+          const ph = document.createElement("div");
+          ph.className = "ad-placeholder";
+          ph.textContent = "Ad image goes here";
+          slide.appendChild(ph);
+        }
+
+        const cap = document.createElement("div");
+        cap.className = "ad-caption";
+        if (ad.tag) { const s = document.createElement("small"); s.textContent = ad.tag; cap.appendChild(s); }
+        const h = document.createElement("h3"); h.textContent = ad.title || "";
+        const p = document.createElement("p"); p.textContent = ad.text || "";
+        cap.append(h, p);
+        slide.appendChild(cap);
+        track.appendChild(slide);
+
+        const dot = document.createElement("button");
+        dot.className = "ad-dot" + (i === 0 ? " active" : "");
+        dot.setAttribute("aria-label", "Go to slide " + (i + 1));
+        dot.addEventListener("click", () => { go(i); restart(); });
+        dots.appendChild(dot);
+      });
+
+      function go(i) {
+        index = (i + ADS.length) % ADS.length;
+        track.style.transform = "translateX(-" + index * 100 + "%)";
+        dots.querySelectorAll(".ad-dot").forEach((d, n) => d.classList.toggle("active", n === index));
+      }
+      function restart() {
+        clearInterval(timer);
+        if (ADS.length > 1) timer = setInterval(() => go(index + 1), AD_AUTOPLAY_MS);
+      }
+      document.getElementById("adPrev").addEventListener("click", () => { go(index - 1); restart(); });
+      document.getElementById("adNext").addEventListener("click", () => { go(index + 1); restart(); });
+      if (ADS.length < 2) {
+        document.getElementById("adPrev").style.display = "none";
+        document.getElementById("adNext").style.display = "none";
+        dots.style.display = "none";
+      }
+      restart();
+    })();
+
+    /* ---------- App grid ---------- */
     const grid = document.getElementById("appGrid");
     const searchInput = document.getElementById("searchInput");
     let activeFilter = "All";
@@ -296,7 +465,8 @@
         top.className = "app-top";
         const icon = document.createElement("div");
         icon.className = "app-icon";
-        icon.textContent = app.icon || "▣";
+        const iconImg = makeImg(app.icon, app.name);
+        if (iconImg) icon.appendChild(iconImg);
         const category = document.createElement("span");
         category.className = "category";
         category.textContent = app.category;
@@ -323,11 +493,12 @@
       });
     }
 
+    /* ---------- Theme ---------- */
     function setTheme(dark) {
       document.body.classList.toggle("dark", dark);
       document.getElementById("themeSwitch").setAttribute("aria-pressed", String(dark));
       document.querySelector('meta[name="theme-color"]').content = dark ? "#090e18" : "#f5f7fb";
-      try { localStorage.setItem("my-apps-theme", dark ? "dark" : "light"); } catch (e) {}
+      try { localStorage.setItem("deplo-apps-theme", dark ? "dark" : "light"); } catch (e) {}
     }
     function toggleTheme() { setTheme(!document.body.classList.contains("dark")); }
 
@@ -344,6 +515,7 @@
       });
     });
 
+    /* ---------- Settings modal ---------- */
     const modal = document.getElementById("settingsModal");
     document.getElementById("openSettings").addEventListener("click", () => modal.classList.add("show"));
     document.getElementById("closeSettings").addEventListener("click", () => modal.classList.remove("show"));
@@ -355,11 +527,14 @@
     document.getElementById("profileEmail").textContent = PROFILE.email;
     document.getElementById("portfolioLink").href = PROFILE.portfolio;
     document.getElementById("githubLink").href = PROFILE.github;
-    document.getElementById("profileInitials").textContent = PROFILE.name.split(/\s+/).map(word => word[0]).join("").slice(0, 2).toUpperCase();
+    const avatar = document.getElementById("profileInitials");
+    const avatarImg = makeImg(PROFILE.photo, PROFILE.name);
+    if (avatarImg) { avatar.textContent = ""; avatar.appendChild(avatarImg); }
+    else avatar.textContent = PROFILE.name.split(/\s+/).map(word => word[0]).join("").slice(0, 2).toUpperCase();
     document.getElementById("year").textContent = new Date().getFullYear();
 
     let savedTheme = "light";
-    try { savedTheme = localStorage.getItem("my-apps-theme") || "light"; } catch (e) {}
+    try { savedTheme = localStorage.getItem("deplo-apps-theme") || "light"; } catch (e) {}
     setTheme(savedTheme === "dark");
     renderApps();
   </script>
