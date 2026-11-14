@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5f7fb" />
+  <title>My Apps — App Store</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-2: #edf2f8;
+      --text: #101828;
+      --muted: #68758a;
+      --line: #e3e9f2;
+      --blue: #2563eb;
+      --blue-soft: #eaf1ff;
+      --green: #16a36a;
+      --shadow: 0 18px 55px rgba(20, 38, 70, .08);
+      --radius: 22px;
+    }
+    body.dark {
+      --bg: #090e18;
+      --surface: #111a29;
+      --surface-2: #192538;
+      --text: #f4f7fc;
+      --muted: #9aa9bd;
+      --line: #26354b;
+      --blue: #5b8cff;
+      --blue-soft: #172b50;
+      --green: #39c88b;
+      --shadow: 0 18px 55px rgba(0, 0, 0, .28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif; transition: background .35s, color .35s;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width: min(1160px, calc(100% - 40px)); margin: auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20; backdrop-filter: blur(18px);
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 11px; font: 700 22px 'Space Grotesk', sans-serif; letter-spacing: -.7px; }
+    .brand-mark {
+      width: 39px; height: 39px; border-radius: 13px; display: grid; place-items: center;
+      color: white; background: linear-gradient(140deg, var(--blue), #1747b8);
+      box-shadow: 0 8px 20px rgba(37,99,235,.25); font-size: 19px;
+    }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .icon-btn {
+      width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 14px;
+      background: var(--surface); color: var(--text); display: grid; place-items: center;
+      transition: transform .2s, border-color .2s;
+    }
+    .icon-btn:hover { transform: translateY(-2px); border-color: var(--blue); }
+    .hero { padding: 64px 0 35px; display: grid; grid-template-columns: 1.25fr .75fr; align-items: center; gap: 35px; }
+    .eyebrow { color: var(--green); font-size: 12px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; }
+    h1 { font: 700 clamp(42px, 6vw, 68px)/1.03 'Space Grotesk', sans-serif; letter-spacing: -3px; margin: 14px 0 18px; }
+    h1 span { color: var(--blue); }
+    .hero p { max-width: 560px; color: var(--muted); font-size: 16px; line-height: 1.75; margin: 0; }
+    .hero-art {
+      min-height: 245px; border-radius: 30px; position: relative; overflow: hidden;
+      background: linear-gradient(145deg, #eaf1ff, #dce9ff 52%, #dff7eb);
+      display: grid; place-items: center;
+    }
+    body.dark .hero-art { background: linear-gradient(145deg, #172b50, #142c43 55%, #12382f); }
+    .orb { position: absolute; border-radius: 50%; filter: blur(1px); animation: float 6s ease-in-out infinite; }
+    .orb.one { width: 155px; height: 155px; background: rgba(37,99,235,.17); top: -42px; right: -15px; }
+    .orb.two { width: 100px; height: 100px; background: rgba(22,163,106,.2); bottom: -20px; left: 15px; animation-delay: -2s; }
+    .app-stack { position: relative; display: flex; align-items: center; gap: 13px; transform: rotate(-8deg); }
+    .stack-tile {
+      width: 78px; height: 90px; border-radius: 23px; background: white; color: var(--blue);
+      display: grid; place-items: center; font-size: 32px; box-shadow: 0 18px 35px rgba(26,57,111,.16);
+      animation: float 4s ease-in-out infinite;
+    }
+    .stack-tile:nth-child(2) { transform: translateY(-24px); color: var(--green); animation-delay: -.8s; }
+    .stack-tile:nth-child(3) { transform: translateY(12px); animation-delay: -1.6s; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 28px 0 22px; }
+    .section-title { font: 700 25px 'Space Grotesk', sans-serif; letter-spacing: -.7px; margin: 0; }
+    .search-wrap { width: min(330px, 100%); position: relative; }
+    .search-wrap span { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    .search {
+      width: 100%; padding: 13px 15px 13px 43px; border: 1px solid var(--line);
+      border-radius: 14px; outline: none; background: var(--surface); color: var(--text);
+      transition: border .2s, box-shadow .2s;
+    }
+    .search:focus { border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); }
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+    .filter {
+      border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+      padding: 8px 15px; border-radius: 999px; font-size: 13px; font-weight: 700; transition: .2s;
+    }
+    .filter.active, .filter:hover { background: var(--blue); border-color: var(--blue); color: white; }
+    .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding-bottom: 75px; }
+    .app-card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 20px; box-shadow: 0 5px 20px rgba(20,38,70,.025);
+      transition: transform .28s, box-shadow .28s, border-color .28s; animation: rise .55s both;
+    }
+    .app-card:hover { transform: translateY(-7px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--blue) 45%, var(--line)); }
+    .app-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .app-icon {
+      width: 57px; height: 57px; border-radius: 18px; display: grid; place-items: center;
+      background: var(--blue-soft); color: var(--blue); font-size: 25px; font-weight: 800;
+    }
+    .category { font-size: 11px; color: var(--green); background: color-mix(in srgb, var(--green) 11%, var(--surface));
+      border-radius: 999px; padding: 6px 10px; font-weight: 800; }
+    .app-card h3 { font: 700 19px 'Space Grotesk', sans-serif; margin: 17px 0 7px; }
+    .app-card p { color: var(--muted); font-size: 13px; line-height: 1.65; min-height: 43px; margin: 0 0 18px; }
+    .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding-top: 15px; }
+    .version { font-size: 11px; color: var(--muted); font-weight: 700; }
+    .download {
+      border: 0; border-radius: 11px; padding: 10px 15px; color: white; background: var(--blue);
+      font-size: 12px; font-weight: 800; transition: .2s; text-decoration: none; display: inline-flex; align-items: center; gap: 7px;
+    }
+    .download:hover { background: #1747b8; transform: translateY(-2px); }
+    .empty { grid-column: 1/-1; text-align: center; padding: 45px; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius); }
+    footer { border-top: 1px solid var(--line); padding: 25px 0 35px; color: var(--muted); font-size: 12px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .footer-inner strong { color: var(--text); }
+    .modal-backdrop { position: fixed; inset: 0; z-index: 50; background: rgba(3,10,24,.55); backdrop-filter: blur(7px); display: none; place-items: center; padding: 20px; }
+    .modal-backdrop.show { display: grid; animation: fade .2s; }
+    .settings {
+      width: min(460px, 100%); background: var(--surface); border: 1px solid var(--line);
+      border-radius: 25px; padding: 25px; box-shadow: var(--shadow); animation: pop .25s;
+    }
+    .settings-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .settings h2 { font: 700 24px 'Space Grotesk', sans-serif; margin: 0; }
+    .profile { display: flex; align-items: center; gap: 14px; padding: 16px; background: var(--surface-2); border-radius: 17px; }
+    .avatar { width: 49px; height: 49px; border-radius: 16px; display: grid; place-items: center; color: white; background: var(--blue); font-weight: 800; font-size: 19px; }
+    .profile strong { display: block; font-size: 15px; }
+    .profile small { color: var(--muted); }
+    .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 17px 2px; border-bottom: 1px solid var(--line); font-size: 14px; }
+    .setting-row:last-child { border: 0; }
+    .setting-row a { color: var(--blue); text-decoration: none; font-weight: 700; }
+    .switch { width: 45px; height: 25px; border-radius: 30px; border: 0; padding: 3px; background: #aab4c3; transition: .2s; }
+    .switch::after { content: ''; display: block; width: 19px; height: 19px; border-radius: 50%; background: white; transition: .2s; }
+    body.dark .switch { background: var(--blue); }
+    body.dark .switch::after { transform: translateX(20px); }
+    .close { border: 0; background: var(--surface-2); color: var(--text); border-radius: 10px; width: 35px; height: 35px; font-size: 20px; }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes float { 0%,100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pop { from { opacity: 0; transform: scale(.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @media (max-width: 850px) { .hero { grid-template-columns: 1fr .7fr; } .app-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 28px, 1160px); }
+      .nav { min-height: 66px; } .brand { font-size: 19px; }
+      .hero { grid-template-columns: 1fr; padding: 44px 0 20px; gap: 25px; }
+      .hero-art { min-height: 175px; } .stack-tile { width: 64px; height: 72px; }
+      h1 { letter-spacing: -2px; } .toolbar { align-items: flex-start; flex-direction: column; }
+      .search-wrap { width: 100%; } .app-grid { grid-template-columns: 1fr; gap: 13px; }
+      .app-card p { min-height: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <div class="brand"><div class="brand-mark">M</div> My Apps</div>
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeQuick" aria-label="Toggle dark mode" title="Toggle dark mode">◐</button>
+        <button class="icon-btn" id="openSettings" aria-label="Open settings" title="Settings">⚙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Your personal app store</div>
+        <h1>Discover apps.<br><span>Download freely.</span></h1>
+        <p>A home for the apps I've built. Explore each app, read what it does, and download the latest version directly from GitHub.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orb one"></div><div class="orb two"></div>
+        <div class="app-stack">
+          <div class="stack-tile">▣</div><div class="stack-tile">✦</div><div class="stack-tile">◈</div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="App library">
+      <div class="toolbar">
+        <h2 class="section-title">Explore my apps</h2>
+        <label class="search-wrap"><span>⌕</span><input class="search" id="searchInput" type="search" placeholder="Search apps..." aria-label="Search apps"></label>
+      </div>
+      <div class="filters" id="filters">
+        <button class="filter active" data-filter="All">All apps</button>
+        <button class="filter" data-filter="Tools">Tools</button>
+        <button class="filter" data-filter="Games">Games</button>
+        <button class="filter" data-filter="Media">Media</button>
+      </div>
+      <div class="app-grid" id="appGrid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>© <span id="year"></span> <strong>My Apps</strong>. Built with care.</span>
+      <span>Powered by GitHub downloads</span>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <section class="settings">
+      <div class="settings-head"><h2 id="settingsTitle">Settings</h2><button class="close" id="closeSettings" aria-label="Close settings">×</button></div>
+      <div class="profile">
+        <div class="avatar" id="profileInitials">YS</div>
+        <div><strong id="profileName">Your Name</strong><small id="profileRole">App Developer</small></div>
+      </div>
+      <div class="setting-row"><span>Dark mode</span><button class="switch" id="themeSwitch" aria-label="Toggle dark mode" aria-pressed="false"></button></div>
+      <div class="setting-row"><span>Email</span><strong id="profileEmail">yourmail@example.com</strong></div>
+      <div class="setting-row"><span>Portfolio</span><a id="portfolioLink" href="https://example.com" target="_blank" rel="noopener">Visit portfolio ↗</a></div>
+      <div class="setting-row"><span>GitHub</span><a id="githubLink" href="https://github.com" target="_blank" rel="noopener">View GitHub ↗</a></div>
+    </section>
+  </div>
+
+  <script>
+    /*
+      CUSTOMIZE THIS SECTION:
+      1. Replace the sample apps with your app details.
+      2. Put each GitHub Release APK/download URL in `downloadUrl`.
+      3. Update the profile details and links below.
+      Tip: A GitHub release asset URL usually looks like:
+      https://github.com/USERNAME/REPOSITORY/releases/download/TAG/your-app.apk
+    */
+    const PROFILE = {
+      name: "Your Name",
+      role: "App Developer",
+      email: "yourmail@example.com",
+      portfolio: "https://example.com",
+      github: "https://github.com/yourusername"
+    };
+
+    const APPS = [
+      {
+        name: "Deplo Hatch — Egg Sort",
+        category: "Games",
+        icon: "🥚",
+        version: "v1.0.0",
+        description: "A cheerful egg-sorting puzzle. Match colourful eggs with their nests and hatch your way through fun levels.",
+        downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
+      },
+      {
+        name: "Creator Studio",
+        category: "Media",
+        icon: "✦",
+        version: "v1.0.0",
+        description: "A handy collection of HD videos and creative content for stories, status updates and social posts.",
+        downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
+      },
+      {
+        name: "Quick Tools",
+        category: "Tools",
+        icon: "⌘",
+        version: "v1.0.0",
+        description: "A simple place for useful everyday tools, designed to make common tasks quicker and easier.",
+        downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
+      }
+    ];
+
+    const grid = document.getElementById("appGrid");
+    const searchInput = document.getElementById("searchInput");
+    let activeFilter = "All";
+
+    function renderApps() {
+      const term = searchInput.value.trim().toLowerCase();
+      const visible = APPS.filter(app => {
+        const matchesFilter = activeFilter === "All" || app.category === activeFilter;
+        const matchesSearch = [app.name, app.category, app.description].join(" ").toLowerCase().includes(term);
+        return matchesFilter && matchesSearch;
+      });
+
+      grid.innerHTML = "";
+      if (!visible.length) {
+        grid.innerHTML = '<div class="empty">No apps found. Try another search.</div>';
+        return;
+      }
+
+      visible.forEach((app, index) => {
+        const card = document.createElement("article");
+        card.className = "app-card";
+        card.style.animationDelay = `${index * 75}ms`;
+
+        const top = document.createElement("div");
+        top.className = "app-top";
+        const icon = document.createElement("div");
+        icon.className = "app-icon";
+        icon.textContent = app.icon || "▣";
+        const category = document.createElement("span");
+        category.className = "category";
+        category.textContent = app.category;
+        top.append(icon, category);
+
+        const title = document.createElement("h3");
+        title.textContent = app.name;
+        const description = document.createElement("p");
+        description.textContent = app.description;
+        const bottom = document.createElement("div");
+        bottom.className = "card-bottom";
+        const version = document.createElement("span");
+        version.className = "version";
+        version.textContent = app.version || "Latest version";
+        const download = document.createElement("a");
+        download.className = "download";
+        download.href = app.downloadUrl;
+        download.target = "_blank";
+        download.rel = "noopener";
+        download.textContent = "↓ Download";
+        bottom.append(version, download);
+        card.append(top, title, description, bottom);
+        grid.appendChild(card);
+      });
+    }
+
+    function setTheme(dark) {
+      document.body.classList.toggle("dark", dark);
+      document.getElementById("themeSwitch").setAttribute("aria-pressed", String(dark));
+      document.querySelector('meta[name="theme-color"]').content = dark ? "#090e18" : "#f5f7fb";
+      try { localStorage.setItem("my-apps-theme", dark ? "dark" : "light"); } catch (e) {}
+    }
+    function toggleTheme() { setTheme(!document.body.classList.contains("dark")); }
+
+    document.getElementById("themeQuick").addEventListener("click", toggleTheme);
+    document.getElementById("themeSwitch").addEventListener("click", toggleTheme);
+    searchInput.addEventListener("input", renderApps);
+
+    document.querySelectorAll(".filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".filter").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        activeFilter = button.dataset.filter;
+        renderApps();
+      });
+    });
+
+    const modal = document.getElementById("settingsModal");
+    document.getElementById("openSettings").addEventListener("click", () => modal.classList.add("show"));
+    document.getElementById("closeSettings").addEventListener("click", () => modal.classList.remove("show"));
+    modal.addEventListener("click", event => { if (event.target === modal) modal.classList.remove("show"); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") modal.classList.remove("show"); });
+
+    document.getElementById("profileName").textContent = PROFILE.name;
+    document.getElementById("profileRole").textContent = PROFILE.role;
+    document.getElementById("profileEmail").textContent = PROFILE.email;
+    document.getElementById("portfolioLink").href = PROFILE.portfolio;
+    document.getElementById("githubLink").href = PROFILE.github;
+    document.getElementById("profileInitials").textContent = PROFILE.name.split(/\s+/).map(word => word[0]).join("").slice(0, 2).toUpperCase();
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    let savedTheme = "light";
+    try { savedTheme = localStorage.getItem("my-apps-theme") || "light"; } catch (e) {}
+    setTheme(savedTheme === "dark");
+    renderApps();
+  </script>
+</body>
+</html>
