@@ -112,7 +112,7 @@
     .ad-caption p { margin: 0; font-size: 13px; opacity: .88; }
     .ad-arrow {
       position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border: 0; border-radius: 50%;
-      background: rgba(255,255,255,.88); color: #101828; font-size: 18px; display: grid; place-items: center; z-index: 2; transition: transform .2s;
+      background: rgb(255 255 255 / 2%); color: #101828; font-size: 18px; display: grid; place-items: center; z-index: 2; transition: transform .2s;
     }
     .ad-arrow:hover { transform: translateY(-50%) scale(1.08); }
     .ad-arrow.prev { left: 14px; } .ad-arrow.next { right: 14px; }
@@ -217,9 +217,10 @@
   <main class="shell">
     <section class="hero">
       <div>
-        <div class="eyebrow">Your personal app store</div>
+        <div class="eyebrow">Apps Made By Me, For You.</div>
         <h1>Discover apps.<br><span>Download freely.</span></h1>
-        <p>A home for the apps I've built. Explore each app, read what it does, and download the latest version directly from GitHub.</p>
+        <p>Every app on Deplo Apps is built from scratch. We build apps that are simple, lightweight and useful for your daily life.
+          No unnecessary permissions, no hidden things, no heavy files that slow down your phone.All apps are personally tested before uploading. They are 100% safe, virus-free and will not harm your phone or steal your data. You can download and use them without any fear.</p>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="orb one"></div><div class="orb two"></div>
@@ -289,11 +290,11 @@
     const LOGO = "logo_apps.jpg";
 
     const PROFILE = {
-      name: "Your Name",
-      role: "App Developer",
+      name: "Mr. Gurusaran B",
+      role: "Development",
       photo: "logo_apps.jpg",                      // profile photo e.g. "me.jpg"
-      email: "yourmail@example.com",
-      portfolio: "https://example.com",
+      email: "gurusaranb123@gmail.com",
+      portfolio: "https://gurusaran-b123.github.io/Guru-portfolio/",
       github: "https://github.com/yourusername"
     };
 
@@ -328,27 +329,27 @@
     // APPS — icon: image file name (leave "" for empty placeholder)
     const APPS = [
       {
-        name: "Deplo Hatch — Egg Sort",
-        category: "Games",
-        icon: "",
-        version: "v1.0.0",
-        description: "A cheerful egg-sorting puzzle. Match colourful eggs with their nests and hatch your way through fun levels.",
-        downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
-      },
-      {
-        name: "Creator Studio",
+        name: "Deploclips",
         category: "Media",
         icon: "",
         version: "v1.0.0",
-        description: "A handy collection of HD videos and creative content for stories, status updates and social posts.",
+        description: "---",
         downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
       },
       {
-        name: "Quick Tools",
+        name: "---",
+        category: "Media",
+        icon: "",
+        version: "v1.0.0",
+        description: "------",
+        downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
+      },
+      {
+        name: "---",
         category: "Tools",
         icon: "",
         version: "v1.0.0",
-        description: "A simple place for useful everyday tools, designed to make common tasks quicker and easier.",
+        description: " --- ",
         downloadUrl: "https://github.com/yourusername/your-repository/releases/latest"
       }
     ];
